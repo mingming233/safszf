@@ -1,0 +1,22 @@
+
+
+源自  Vmall   HomeListAdapter
+
+vh.grid_stat_ivprdPic.setContentDescription(list.get(position).getPrdId());
+			vh.grid_stat_ivprdPic.setImageResource(R.drawable.icon_no_pic);
+			String str=list.get(position).getPrdPicUrl();
+			vh.grid_stat_ivprdPic.setTag(str);
+			if(!map.containsKey(str)){     //判断key有没有对应的value值，即map中是否有bitmap内容
+				new DownSaveImgAsync(context, new DownSaveImgAsync.CallBack() {
+					public void sendImage(Bitmap bm,String key) {
+						ImageView iv=(ImageView) gv.findViewWithTag(key);
+						if(iv!=null){
+							iv.setImageBitmap(bm);
+						}
+					}
+				},map).execute(list.get(position).getPrdPicUrl());
+			}else{
+				vh.grid_stat_ivprdPic.setImageBitmap(map.get(str));
+			}
+
+***  CallBack为借口返回map<bitmap,key>,key=url
